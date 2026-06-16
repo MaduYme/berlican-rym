@@ -4,150 +4,236 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>BERLICAN RYM — EV Van Concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;700;800&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet"/>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,300;0,600;0,700;0,900;1,300&family=Barlow:wght@300;400;500&display=swap');
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --ink:#070810;--paper:#f0ede6;
-  --electric:#00e5a0;--solar:#ffc940;--blue:#2a7fff;
+  --ink:#04050a;
+  --ink2:#080c14;
+  --paper:#eceae2;
+  --elec:#00ffb2;
+  --elec2:#00cc8f;
+  --solar:#ffbe00;
+  --blue:#1a6fff;
+  --red:#ff2d2d;
+  --muted:rgba(255,255,255,.22);
+  --dim:rgba(255,255,255,.08);
 }
+
+/* ── CUSTOM CURSOR ── */
+*{cursor:none}
+#cur{position:fixed;width:10px;height:10px;background:var(--elec);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform .1s;mix-blend-mode:difference}
+#cur2{position:fixed;width:36px;height:36px;border:1px solid rgba(0,255,178,.35);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:transform .18s,width .2s,height .2s}
+
+/* ── SCANLINE OVERLAY ── */
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.03) 2px,rgba(0,0,0,.03) 4px);pointer-events:none;z-index:500}
+
 html{scroll-behavior:smooth}
-body{background:var(--ink);color:var(--paper);font-family:'Barlow',sans-serif;overflow-x:hidden}
+body{background:var(--ink);color:var(--paper);font-family:'Syne',sans-serif;overflow-x:hidden;line-height:1}
 
-/* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:58px;background:rgba(7,8,16,0);transition:background .4s;border-bottom:1px solid rgba(255,255,255,0);}
-nav.scrolled{background:rgba(7,8,16,.92);border-bottom-color:rgba(255,255,255,.07);backdrop-filter:blur(12px)}
-.nav-logo{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:22px;letter-spacing:.14em;color:var(--paper)}
-.nav-logo span{color:var(--electric)}
-.nav-links{display:flex;gap:32px}
-.nav-links a{font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:rgba(255,255,255,.35);text-decoration:none;transition:color .2s}
-.nav-links a:hover{color:var(--paper)}
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:0 48px;height:60px;display:flex;align-items:center;justify-content:space-between;transition:background .5s,border .5s}
+nav.scrolled{background:rgba(4,5,10,.88);border-bottom:1px solid rgba(0,255,178,.08);backdrop-filter:blur(16px)}
+.n-logo{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:.22em;color:var(--paper);display:flex;align-items:center;gap:10px}
+.n-logo .dot{width:7px;height:7px;background:var(--elec);border-radius:50%;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+.n-links{display:flex;gap:36px;align-items:center}
+.n-links a{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.2em;color:var(--muted);text-decoration:none;text-transform:uppercase;transition:color .2s;position:relative}
+.n-links a::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:1px;background:var(--elec);transition:width .3s}
+.n-links a:hover{color:var(--elec)}
+.n-links a:hover::after{width:100%}
+.n-tag{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.16em;color:rgba(0,255,178,.4);border:1px solid rgba(0,255,178,.2);padding:5px 10px}
 
-/* ── SECTION 1: HERO ── */
-#s1{height:100vh;position:relative;overflow:hidden;display:flex;align-items:flex-end;justify-content:flex-end;padding-bottom:60px}
+/* ── HERO ── */
+#s1{height:100vh;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end}
 #c1{position:absolute;inset:0;width:100%;height:100%;display:block}
-.hero-content{position:relative;z-index:2;padding:0 56px 0 56px;max-width:600px;align-self:flex-end;margin-bottom:80px}
-.hero-eyebrow{font-size:9px;letter-spacing:.42em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:16px}
-.hero-h1{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(52px,8vw,96px);line-height:.88;letter-spacing:-.02em;margin-bottom:24px}
-.hero-h1 em{font-style:normal;display:block;color:var(--electric)}
-.hero-sub{font-size:14px;font-weight:300;color:rgba(255,255,255,.45);line-height:1.7;max-width:420px;margin-bottom:36px}
-.hero-btns{display:flex;gap:12px;flex-wrap:wrap}
-.btn-primary{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;padding:13px 28px;background:var(--electric);color:#000;border:none;cursor:pointer;transition:opacity .18s}
-.btn-primary:hover{opacity:.85}
-.btn-ghost{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;padding:12px 27px;background:transparent;color:var(--paper);border:1px solid rgba(255,255,255,.22);cursor:pointer;transition:all .18s}
-.btn-ghost:hover{border-color:var(--paper)}
 
-/* View buttons */
-#view-btns{position:absolute;top:72px;right:32px;z-index:3;display:flex;flex-direction:column;gap:5px}
-.vbtn{background:rgba(7,8,16,.7);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.35);font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.18em;padding:7px 14px;cursor:pointer;transition:all .15s;text-transform:uppercase}
-.vbtn:hover,.vbtn.on{background:var(--electric);color:#000;border-color:var(--electric)}
+/* Noise texture */
+#s1::after{content:'';position:absolute;inset:0;opacity:.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");pointer-events:none;z-index:1}
 
-/* Battery HUD */
-#batt-hud{position:absolute;top:72px;left:32px;z-index:3;background:rgba(7,8,16,.82);border:1px solid rgba(255,255,255,.1);padding:14px 18px;min-width:220px;backdrop-filter:blur(8px)}
-.hud-ttl{font-size:8px;letter-spacing:.34em;color:rgba(255,255,255,.25);text-transform:uppercase;margin-bottom:12px}
-.brow{display:flex;align-items:center;gap:9px;margin-bottom:8px}
-.blbl{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:.08em;color:rgba(255,255,255,.4);width:62px;text-transform:uppercase}
-.btrack{flex:1;height:4px;background:rgba(255,255,255,.07)}
+/* Gradient vignette */
+#s1 .vignette{position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 40%,rgba(4,5,10,.85) 100%);z-index:1;pointer-events:none}
+#s1 .grad-bottom{position:absolute;bottom:0;left:0;right:0;height:60%;background:linear-gradient(to top,rgba(4,5,10,1) 0%,transparent 100%);z-index:1;pointer-events:none}
+
+/* vertical text label */
+.vert-label{position:absolute;right:24px;top:50%;transform:translateY(-50%) rotate(90deg);font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.4em;color:rgba(255,255,255,.15);z-index:3;white-space:nowrap;transform-origin:center center}
+
+/* view buttons */
+#view-btns{position:absolute;top:72px;left:32px;z-index:3;display:flex;flex-direction:column;gap:4px}
+.vbtn{background:rgba(4,5,10,.6);border:1px solid var(--dim);color:rgba(255,255,255,.3);font-family:'DM Mono',monospace;font-size:9px;font-weight:400;letter-spacing:.16em;padding:8px 14px;cursor:none;transition:all .18s;text-transform:uppercase;position:relative;overflow:hidden}
+.vbtn::before{content:'';position:absolute;inset:0;background:var(--elec);transform:scaleX(0);transform-origin:left;transition:transform .2s;z-index:-1}
+.vbtn:hover::before,.vbtn.on::before{transform:scaleX(1)}
+.vbtn:hover,.vbtn.on{color:#000;border-color:var(--elec)}
+
+/* hero content */
+.hero-wrap{position:relative;z-index:2;padding:0 0 64px 56px;display:grid;grid-template-columns:1fr auto;align-items:flex-end;gap:40px}
+.hero-left{}
+.hero-eyebrow{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.32em;color:var(--elec);text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;gap:12px}
+.hero-eyebrow::before{content:'';display:block;width:32px;height:1px;background:var(--elec)}
+.hero-h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(80px,14vw,180px);line-height:.85;letter-spacing:.04em;color:var(--paper);position:relative}
+.hero-h1 .outline{-webkit-text-stroke:1px rgba(255,255,255,.18);color:transparent}
+.hero-h1 .elec{color:var(--elec);display:block}
+.hero-sub{font-size:13px;font-weight:400;color:rgba(255,255,255,.4);line-height:1.8;max-width:380px;margin-top:20px;margin-bottom:32px;font-family:'Syne',sans-serif}
+.hero-btns{display:flex;gap:10px;flex-wrap:wrap}
+.btn-p{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;padding:14px 30px;background:var(--elec);color:#000;border:none;cursor:none;transition:all .18s;font-weight:400;position:relative;overflow:hidden}
+.btn-p::after{content:'→';position:absolute;right:-20px;top:50%;transform:translateY(-50%);transition:right .2s}
+.btn-p:hover{padding-right:44px}
+.btn-p:hover::after{right:14px}
+.btn-g{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;padding:13px 29px;background:transparent;color:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.18);cursor:none;transition:all .18s}
+.btn-g:hover{border-color:var(--paper);color:var(--paper)}
+
+/* hero right stats */
+.hero-right{padding-right:60px;padding-bottom:8px;display:flex;flex-direction:column;gap:20px;border-left:1px solid var(--dim);padding-left:40px}
+.hstat{display:flex;flex-direction:column;gap:4px}
+.hstat-num{font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:.06em;line-height:1}
+.hstat-num.eg{color:var(--elec)}
+.hstat-num.ey{color:var(--solar)}
+.hstat-lbl{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.22em;color:rgba(255,255,255,.28);text-transform:uppercase}
+
+/* HUDs */
+#batt-hud{position:absolute;bottom:calc(64px + 120px);left:56px;z-index:3;padding:16px 20px;min-width:230px;border:1px solid rgba(0,255,178,.15);background:rgba(4,5,10,.75);backdrop-filter:blur(12px)}
+#batt-hud::before{content:'DUAL BATTERY SYSTEM';position:absolute;top:-9px;left:12px;font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.3em;color:var(--elec);background:var(--ink);padding:0 6px}
+.brow{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.blbl{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.08em;color:rgba(255,255,255,.35);width:58px;text-transform:uppercase}
+.btrack{flex:1;height:3px;background:rgba(255,255,255,.06);position:relative}
 .bfill{height:100%;transition:width .4s}
-.bpct{font-family:'Barlow Condensed',sans-serif;font-size:11px;color:var(--paper);min-width:30px;text-align:right}
-.btag{font-size:7px;letter-spacing:.1em;padding:2px 5px;font-weight:700;text-transform:uppercase}
-.tg-a{background:rgba(0,229,160,.1);color:var(--electric);border:1px solid rgba(0,229,160,.25)}
-.tg-b{background:rgba(42,127,255,.1);color:var(--blue);border:1px solid rgba(42,127,255,.25)}
-.sw-inf{font-size:8px;color:rgba(255,255,255,.18);letter-spacing:.06em;margin-top:3px}
+.bpct{font-family:'Bebas Neue',monospace;font-size:14px;color:var(--paper);min-width:30px;text-align:right;letter-spacing:.06em}
+.btag{font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.1em;padding:2px 5px;text-transform:uppercase}
+.tg-a{color:var(--elec);border:1px solid rgba(0,255,178,.3)}
+.tg-b{color:var(--blue);border:1px solid rgba(26,111,255,.3)}
+.sw-inf{font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.2);letter-spacing:.08em;margin-top:5px}
 
-/* Solar HUD */
-#sol-hud{position:absolute;top:72px;right:130px;z-index:3;background:rgba(7,8,16,.82);border:1px solid rgba(255,255,255,.1);padding:14px 18px;backdrop-filter:blur(8px);text-align:right}
-.srow{font-size:10px;color:rgba(255,255,255,.32);margin-bottom:5px}
-.sv{color:var(--paper);font-weight:500}
-.sv.g{color:var(--electric)}.sv.y{color:var(--solar)}
+#sol-hud{position:absolute;bottom:calc(64px + 120px);right:80px;z-index:3;padding:16px 20px;border:1px solid rgba(255,190,0,.15);background:rgba(4,5,10,.75);backdrop-filter:blur(12px);text-align:right}
+#sol-hud::before{content:'SOLAR ROOF';position:absolute;top:-9px;right:12px;font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.3em;color:var(--solar);background:var(--ink);padding:0 6px}
+.srow{font-family:'DM Mono',monospace;font-size:10px;color:rgba(255,255,255,.28);margin-bottom:5px;letter-spacing:.04em}
+.sv{color:var(--paper)}.sv.g{color:var(--elec)}.sv.y{color:var(--solar)}
 
-/* Switch flash */
-#sw-flash{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:4;background:rgba(0,229,160,.06);border:1px solid var(--electric);padding:10px 26px;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;letter-spacing:.24em;color:var(--electric);text-transform:uppercase;opacity:0;transition:opacity .3s;pointer-events:none}
+#sw-flash{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:4;padding:10px 28px;font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:.28em;color:var(--elec);border:1px solid var(--elec);background:rgba(0,255,178,.04);opacity:0;transition:opacity .28s;pointer-events:none}
 
-/* Drag hint */
-#drag-hint{position:absolute;bottom:90px;left:50%;transform:translateX(-50%);z-index:3;font-size:8px;letter-spacing:.28em;color:rgba(255,255,255,.18);text-transform:uppercase;transition:opacity 1s}
+#drag-hint{position:absolute;bottom:72px;left:50%;transform:translateX(-50%);z-index:3;font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.28em;color:rgba(255,255,255,.16);text-transform:uppercase;transition:opacity 1s}
 
-/* scroll indicator */
-.scroll-ind{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);z-index:3;display:flex;flex-direction:column;align-items:center;gap:6px}
-.scroll-ind span{font-size:8px;letter-spacing:.3em;color:rgba(255,255,255,.2);text-transform:uppercase}
-.scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,rgba(255,255,255,.3),transparent)}
+/* scroll line */
+.scroll-ind{position:absolute;right:48px;bottom:40px;z-index:3;display:flex;flex-direction:column;align-items:center;gap:8px}
+.scroll-ind span{font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.28em;color:rgba(255,255,255,.18);text-transform:uppercase;writing-mode:vertical-rl}
+.scroll-line{width:1px;height:50px;background:linear-gradient(to bottom,rgba(255,255,255,.25),transparent)}
+.scroll-dot{width:4px;height:4px;border-radius:50%;background:var(--elec);animation:scrolldot 2s ease-in-out infinite}
+@keyframes scrolldot{0%{transform:translateY(0);opacity:1}100%{transform:translateY(50px);opacity:0}}
 
-/* ── SECTION 2: SPLIT ── */
+/* ── SPLIT ── */
 #s2{display:grid;grid-template-columns:1fr 1fr;height:100vh;position:relative}
 .sp-pane{position:relative;overflow:hidden}
 .sp-pane canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
-.sp-overlay{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;justify-content:flex-end;padding:40px 40px}
-.sp-tag{font-size:8px;letter-spacing:.34em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:10px}
-.sp-title{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:700;letter-spacing:.03em;margin-bottom:8px}
-.sp-body{font-size:12px;line-height:1.72;color:rgba(255,255,255,.42);font-weight:300;max-width:300px}
-.sp-div{width:1px;background:rgba(255,255,255,.07);position:absolute;left:50%;top:0;bottom:0;z-index:5}
+.sp-overlay{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;justify-content:flex-end;padding:44px 44px;background:linear-gradient(to top,rgba(4,5,10,.95) 0%,transparent 60%)}
+.sp-num{font-family:'Bebas Neue',sans-serif;font-size:80px;line-height:1;color:rgba(255,255,255,.04);position:absolute;top:32px;left:36px;letter-spacing:.04em}
+.sp-tag{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.3em;text-transform:uppercase;color:var(--elec);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.sp-tag::before{content:'';display:block;width:20px;height:1px;background:var(--elec)}
+.sp-title{font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:.06em;margin-bottom:10px}
+.sp-body{font-family:'Syne',sans-serif;font-size:12px;line-height:1.78;color:rgba(255,255,255,.38);font-weight:400;max-width:280px}
+.sp-div{position:absolute;left:50%;top:0;bottom:0;width:1px;background:rgba(255,255,255,.06);z-index:5}
 
-/* ── SECTION 3: SPECS ── */
-#s3{background:var(--paper);color:#070810;padding:96px 56px}
-.s3-inner{max-width:1000px;margin:0 auto}
-.s3-eye{font-size:8px;letter-spacing:.38em;text-transform:uppercase;color:rgba(7,8,16,.3);margin-bottom:14px}
-.s3-h{font-family:'Barlow Condensed',sans-serif;font-size:clamp(42px,6vw,80px);font-weight:900;line-height:.9;letter-spacing:-.01em;color:#070810;margin-bottom:52px}
-.s3-h em{font-style:normal;color:#0a52cc}
+/* ── TECH SECTION ── */
+#s3{background:var(--ink2);color:var(--paper);padding:100px 56px}
+.s3i{max-width:1040px;margin:0 auto}
+
+.section-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:64px}
+.s3-eye{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.34em;text-transform:uppercase;color:var(--elec);display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.s3-eye::before{content:'';display:block;width:24px;height:1px;background:var(--elec)}
+.s3-h{font-family:'Bebas Neue',sans-serif;font-size:clamp(48px,7vw,88px);line-height:.88;letter-spacing:.03em}
+.s3-h em{font-style:normal;-webkit-text-stroke:1px rgba(255,255,255,.2);color:transparent}
+.section-year{font-family:'Bebas Neue',sans-serif;font-size:120px;line-height:1;color:rgba(255,255,255,.03);letter-spacing:.04em}
+
+/* cards */
 .s3-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-bottom:2px}
-.sc{padding:28px 30px;background:#070810;color:var(--paper)}
-.sc.lt{background:#e6e2d8;color:#070810}
-.sc-lbl{font-size:7px;letter-spacing:.32em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:8px}
-.sc.lt .sc-lbl{color:rgba(7,8,16,.28)}
-.sc-title{font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:700;letter-spacing:.03em;margin-bottom:8px}
-.sc-body{font-size:12px;line-height:1.68;color:rgba(255,255,255,.46);font-weight:300}
-.sc.lt .sc-body{color:rgba(7,8,16,.48)}
-.sc-stat{font-family:'Barlow Condensed',sans-serif;font-size:44px;font-weight:900;margin-top:12px;line-height:1}
-.eg{color:var(--electric)}.ey{color:var(--solar)}.eb{color:#2a7fff}.ei{color:#0a52cc}
+.sc{padding:36px 32px;background:rgba(255,255,255,.02);border:1px solid var(--dim);position:relative;overflow:hidden;transition:border-color .3s}
+.sc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--elec),transparent);opacity:0;transition:opacity .3s}
+.sc:hover{border-color:rgba(0,255,178,.2)}
+.sc:hover::before{opacity:1}
+.sc.lt{background:rgba(255,255,255,.035);border-color:rgba(255,255,255,.06)}
+.sc-num{font-family:'Bebas Neue',sans-serif;font-size:100px;color:rgba(255,255,255,.03);position:absolute;top:16px;right:16px;line-height:1;letter-spacing:.04em}
+.sc-lbl{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,255,255,.22);margin-bottom:10px}
+.sc-title{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:.06em;margin-bottom:12px}
+.sc-body{font-family:'Syne',sans-serif;font-size:12px;line-height:1.78;color:rgba(255,255,255,.38);font-weight:400}
+.sc-stat{font-family:'Bebas Neue',sans-serif;font-size:54px;font-weight:400;margin-top:20px;line-height:1;letter-spacing:.04em}
+.eg{color:var(--elec)}.ey{color:var(--solar)}.eb{color:var(--blue)}.ei{color:rgba(255,255,255,.5)}
 
-.s3-wide{background:#070810;color:var(--paper);padding:28px 38px;display:flex;align-items:center;justify-content:space-between;gap:40px;margin-bottom:2px}
-.sw-lbl{font-size:7px;letter-spacing:.32em;text-transform:uppercase;color:rgba(255,255,255,.22);margin-bottom:6px}
-.sw-title{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:700;margin-bottom:8px}
-.sw-body{font-size:12px;line-height:1.68;color:rgba(255,255,255,.4);font-weight:300;max-width:500px}
-.sw-big{font-family:'Barlow Condensed',sans-serif;font-size:60px;font-weight:900;line-height:1;text-align:right;white-space:nowrap}
-.sw-unit{font-size:12px;color:rgba(255,255,255,.28);letter-spacing:.08em;text-align:right}
+/* wide card */
+.s3-wide{padding:36px 40px;background:rgba(0,255,178,.03);border:1px solid rgba(0,255,178,.1);display:flex;align-items:center;justify-content:space-between;gap:48px;margin-bottom:2px;position:relative;overflow:hidden}
+.s3-wide::after{content:'';position:absolute;right:-60px;top:50%;transform:translateY(-50%);width:200px;height:200px;background:radial-gradient(circle,rgba(0,255,178,.06),transparent 70%);pointer-events:none}
+.sw-lbl{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.3em;text-transform:uppercase;color:rgba(0,255,178,.5);margin-bottom:8px}
+.sw-title{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:.06em;margin-bottom:10px}
+.sw-body{font-family:'Syne',sans-serif;font-size:12px;line-height:1.78;color:rgba(255,255,255,.35);max-width:520px}
+.sw-big{font-family:'Bebas Neue',sans-serif;font-size:72px;line-height:1;text-align:right;letter-spacing:.04em;white-space:nowrap}
+.sw-unit{font-family:'DM Mono',monospace;font-size:10px;color:rgba(255,255,255,.2);letter-spacing:.1em;text-align:right;margin-top:4px}
 
-/* Flow */
-.s3-flow{background:#0b0e1c;padding:28px 38px;margin-bottom:2px}
-.fl-lbl{font-size:7px;letter-spacing:.32em;text-transform:uppercase;color:rgba(255,255,255,.2);margin-bottom:18px}
+/* flow */
+.s3-flow{padding:36px 40px;background:rgba(255,255,255,.015);border:1px solid var(--dim);margin-bottom:2px}
+.fl-lbl{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,255,255,.2);margin-bottom:20px}
 .fl-row{display:flex;align-items:center;flex-wrap:wrap;gap:0}
-.fn{padding:8px 14px;font-size:10px;font-family:'Barlow Condensed',sans-serif;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.3)}
-.fn.g{background:rgba(0,229,160,.07);border-color:rgba(0,229,160,.28);color:var(--electric)}
-.fn.b{background:rgba(42,127,255,.07);border-color:rgba(42,127,255,.28);color:#2a7fff}
-.fn.y{background:rgba(255,201,64,.07);border-color:rgba(255,201,64,.28);color:var(--solar)}
-.fn.w{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.18);color:#fff;font-weight:700}
-.fa{color:rgba(255,255,255,.16);font-size:14px;padding:0 8px}
+.fn{padding:10px 16px;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;border:1px solid rgba(255,255,255,.07);color:rgba(255,255,255,.25)}
+.fn.g{background:rgba(0,255,178,.05);border-color:rgba(0,255,178,.2);color:var(--elec)}
+.fn.b{background:rgba(26,111,255,.05);border-color:rgba(26,111,255,.2);color:var(--blue)}
+.fn.y{background:rgba(255,190,0,.05);border-color:rgba(255,190,0,.2);color:var(--solar)}
+.fn.w{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.15);color:#fff;font-weight:400}
+.fa{color:rgba(255,255,255,.14);font-size:14px;padding:0 8px;font-family:'DM Mono',monospace}
 
 /* ── FOOTER ── */
-footer{background:#040508;padding:48px 56px;border-top:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:space-between}
-.ft-logo{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:20px;letter-spacing:.14em}
-.ft-logo span{color:var(--electric)}
-.ft-right{text-align:right;font-size:10px;color:rgba(255,255,255,.2);line-height:1.8;letter-spacing:.04em}
+footer{background:#020308;padding:56px;border-top:1px solid rgba(0,255,178,.06);display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:40px}
+.ft-logo{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:.18em;color:var(--paper);display:flex;align-items:center;gap:10px}
+.ft-logo .dot{width:8px;height:8px;background:var(--elec);border-radius:50%}
+.ft-center{text-align:center}
+.ft-center .ft-eye{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.3em;color:rgba(0,255,178,.4);text-transform:uppercase;margin-bottom:6px}
+.ft-center .ft-name{font-family:'Syne',sans-serif;font-size:12px;color:rgba(255,255,255,.3)}
+.ft-right{text-align:right;font-family:'DM Mono',monospace;font-size:9px;color:rgba(255,255,255,.18);line-height:1.8;letter-spacing:.04em}
+
+/* ── ENTER ANIMATION ── */
+.fade-up{opacity:0;transform:translateY(24px);animation:fadeUp .8s ease forwards}
+@keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
+.delay-1{animation-delay:.15s}
+.delay-2{animation-delay:.3s}
+.delay-3{animation-delay:.45s}
+.delay-4{animation-delay:.6s}
 
 @media(max-width:768px){
   #s2{grid-template-columns:1fr;height:auto}
   .sp-pane{height:50vh}
   .s3-grid{grid-template-columns:1fr}
-  .s3-wide{flex-direction:column}
-  .hero-content{padding:0 28px}
-  nav{padding:0 24px}
-  .nav-links{display:none}
+  .s3-wide{flex-direction:column;gap:16px}
+  .hero-wrap{grid-template-columns:1fr;padding:0 28px 48px}
+  .hero-right{display:none}
+  nav{padding:0 20px}
+  .n-links{display:none}
+  #batt-hud,#sol-hud{display:none}
+  footer{grid-template-columns:1fr;text-align:center}
+  .ft-right{text-align:center}
 }
 </style>
 </head>
 <body>
 
+<!-- Custom cursor -->
+<div id="cur"></div>
+<div id="cur2"></div>
+
 <nav id="nav">
-  <div class="nav-logo">BERLICAN <span>RYM</span></div>
-  <div class="nav-links">
+  <div class="n-logo">
+    <div class="dot"></div>
+    BERLICAN RYM
+  </div>
+  <div class="n-links">
     <a href="#s1">Overview</a>
     <a href="#s2">Design</a>
     <a href="#s3">Technology</a>
   </div>
+  <div class="n-tag">EV VAN · 2016</div>
 </nav>
 
 <!-- ── HERO ── -->
 <section id="s1">
   <canvas id="c1"></canvas>
+  <div class="vignette"></div>
+  <div class="grad-bottom"></div>
+  <div class="vert-label">BERLICAN RYM · EV CONCEPT · 2016</div>
 
   <div id="view-btns">
     <button class="vbtn on" data-v="hero">¾ View</button>
@@ -157,99 +243,129 @@ footer{background:#040508;padding:48px 56px;border-top:1px solid rgba(255,255,25
   </div>
 
   <div id="batt-hud">
-    <div class="hud-ttl">Dual Battery System</div>
     <div class="brow">
       <div class="blbl">Pack A</div>
-      <div class="btrack"><div class="bfill" id="bfA" style="width:78%;background:#00e5a0"></div></div>
-      <div class="bpct" id="bpA">78%</div>
+      <div class="btrack"><div class="bfill" id="bfA" style="width:78%;background:var(--elec)"></div></div>
+      <div class="bpct" id="bpA">78</div>
       <div class="btag tg-a">Active</div>
     </div>
     <div class="brow">
       <div class="blbl">Pack B</div>
-      <div class="btrack"><div class="bfill" id="bfB" style="width:95%;background:#2a7fff"></div></div>
-      <div class="bpct" id="bpB">95%</div>
+      <div class="btrack"><div class="bfill" id="bfB" style="width:95%;background:var(--blue)"></div></div>
+      <div class="bpct" id="bpB">95</div>
       <div class="btag tg-b">Charging</div>
     </div>
-    <div class="sw-inf">Switch at 20% threshold · 4ms transfer</div>
+    <div class="sw-inf">Switch at 20% · 4ms transfer time</div>
   </div>
 
   <div id="sol-hud">
-    <div class="hud-ttl">Solar Roof</div>
-    <div class="srow">Roof area <span class="sv">8.4 m²</span></div>
-    <div class="srow">Live output <span class="sv y" id="solarW">1,240 W</span></div>
-    <div class="srow">Daily range bonus <span class="sv">+55 km</span></div>
-    <div class="srow">Grid dependency <span class="sv g">None</span></div>
+    <div class="srow">Area <span class="sv">8.4 m²</span></div>
+    <div class="srow">Output <span class="sv y" id="solarW">1,240 W</span></div>
+    <div class="srow">Daily bonus <span class="sv">+55 km</span></div>
+    <div class="srow">Grid <span class="sv g">None</span></div>
   </div>
 
-  <div id="sw-flash">⚡ Battery Switch — 4ms</div>
-  <div id="drag-hint">Drag to orbit · Scroll to zoom</div>
+  <div id="sw-flash">⚡ BATTERY SWITCH — 4ms</div>
+  <div id="drag-hint">— Drag to orbit · Scroll to zoom —</div>
 
-  <div class="hero-content">
-    <div class="hero-eyebrow">Original concept · Madusanka Gamage · 2016</div>
-    <h1 class="hero-h1">BERLICAN<br>RYM<em>Never stops.</em></h1>
-    <p class="hero-sub">A self-sustaining electric van powered by dual battery switching and full solar roof integration. No charging stations. No range anxiety. Forever.</p>
-    <div class="hero-btns">
-      <button class="btn-primary" onclick="document.getElementById('s3').scrollIntoView({behavior:'smooth'})">Explore Technology</button>
-      <button class="btn-ghost" onclick="document.getElementById('s2').scrollIntoView({behavior:'smooth'})">See Design</button>
+  <div class="hero-wrap">
+    <div class="hero-left">
+      <div class="hero-eyebrow fade-up">Original Concept · Madusanka Gamage · Sri Lanka · 2016</div>
+      <h1 class="hero-h1 fade-up delay-1">
+        BERLICAN<br>
+        <span class="outline">RYM</span>
+        <span class="elec">Never stops.</span>
+      </h1>
+      <p class="hero-sub fade-up delay-2">A self-sustaining electric van. Dual battery switching. Full solar roof. No charging stations. No range anxiety. A perpetual energy loop.</p>
+      <div class="hero-btns fade-up delay-3">
+        <button class="btn-p" onclick="document.getElementById('s3').scrollIntoView({behavior:'smooth'})">Explore Technology</button>
+        <button class="btn-g" onclick="document.getElementById('s2').scrollIntoView({behavior:'smooth'})">See Design</button>
+      </div>
+    </div>
+    <div class="hero-right fade-up delay-4">
+      <div class="hstat">
+        <div class="hstat-num eg">4ms</div>
+        <div class="hstat-lbl">Switch Time</div>
+      </div>
+      <div class="hstat">
+        <div class="hstat-num ey">+55km</div>
+        <div class="hstat-lbl">Daily Solar</div>
+      </div>
+      <div class="hstat">
+        <div class="hstat-num">450+</div>
+        <div class="hstat-lbl">Range km</div>
+      </div>
     </div>
   </div>
 
   <div class="scroll-ind">
-    <span>Scroll</span>
+    <div class="scroll-dot"></div>
     <div class="scroll-line"></div>
+    <span>Scroll</span>
   </div>
 </section>
 
-<!-- ── SPLIT: EXTERIOR / MECHANISM ── -->
+<!-- ── SPLIT ── -->
 <section id="s2">
-  <div class="sp-pane" id="pane-ext">
+  <div class="sp-pane">
     <canvas id="c2"></canvas>
+    <div class="sp-num">01</div>
     <div class="sp-overlay">
       <div class="sp-tag">Exterior · Solar Finish</div>
       <div class="sp-title">Full Solar Roof</div>
-      <div class="sp-body">Entire roof surface replaced with photovoltaic panels. 8.4 m² active area generates up to 1,400W in peak tropical sun — charging while parked or moving.</div>
+      <div class="sp-body">Entire roof surface replaced with photovoltaic panels. 8.4 m² active area. Up to 1,400W peak output. Passive charging — parked or moving.</div>
     </div>
   </div>
   <div class="sp-div"></div>
-  <div class="sp-pane" id="pane-mech">
+  <div class="sp-pane">
     <canvas id="c3"></canvas>
+    <div class="sp-num">02</div>
     <div class="sp-overlay">
       <div class="sp-tag">Internal · Battery Mechanism</div>
-      <div class="sp-title">Dual Pack Switching</div>
-      <div class="sp-body">Two packs under the floor. Active pack drives the motor. Standby pack charges via solar and regen braking. BMS switches in 4ms at 20% threshold — zero downtime.</div>
+      <div class="sp-title">Dual Pack Switch</div>
+      <div class="sp-body">Two packs under the floor. Active drives motor. Standby charges via solar + regen. BMS switches in 4ms at 20% — zero downtime, ever.</div>
     </div>
   </div>
 </section>
 
 <!-- ── TECHNOLOGY ── -->
 <section id="s3">
-  <div class="s3-inner">
-    <div class="s3-eye">EV Technology · Original Concept 2016</div>
-    <div class="s3-h">Built different.<br><em>Engineered to never stop.</em></div>
+  <div class="s3i">
+    <div class="section-header">
+      <div>
+        <div class="s3-eye">EV Technology · Original Concept</div>
+        <div class="s3-h">Built<br>different.<br><em>Engineered to<br>never stop.</em></div>
+      </div>
+      <div class="section-year">2016</div>
+    </div>
 
     <div class="s3-grid">
       <div class="sc">
+        <div class="sc-num">01</div>
         <div class="sc-lbl">Core Innovation</div>
         <div class="sc-title">Dual Battery Active Switch</div>
-        <div class="sc-body">Two independent packs run in sequence. When the active pack hits 20%, the BMS switches to the standby pack in under 4 milliseconds. The depleted pack immediately begins recharging via solar and regenerative braking.</div>
+        <div class="sc-body">Two independent packs run in sequence. At 20%, the BMS switches to the standby pack in under 4 milliseconds. The depleted pack immediately begins charging via solar and regenerative braking.</div>
         <div class="sc-stat eg">4ms</div>
       </div>
       <div class="sc">
+        <div class="sc-num">02</div>
         <div class="sc-lbl">Energy Harvest</div>
         <div class="sc-title">Full Solar Roof Integration</div>
-        <div class="sc-body">The plastic or fibre roof is replaced entirely with high-efficiency photovoltaic cells. In tropical climates with 8–9 hours of peak sun, the van earns up to 55 km of free range per day — parked or in motion.</div>
+        <div class="sc-body">The fibre or plastic roof is replaced entirely with photovoltaic cells. In tropical climates with 8–9 hours of peak sun, the van earns up to 55 km of free range daily — parked or in motion.</div>
         <div class="sc-stat ey">+55km</div>
       </div>
       <div class="sc lt">
+        <div class="sc-num">03</div>
         <div class="sc-lbl">Total Range</div>
         <div class="sc-title">450km+ Per Cycle</div>
         <div class="sc-body">Because one battery always charges while the other runs, effective range extends far beyond a single pack. Complete full daily delivery routes without a single charging stop.</div>
-        <div class="sc-stat eb">450+ km</div>
+        <div class="sc-stat eb">450+km</div>
       </div>
       <div class="sc lt">
+        <div class="sc-num">04</div>
         <div class="sc-lbl">Self-Sustaining Loop</div>
         <div class="sc-title">Charge While You Drive</div>
-        <div class="sc-body">Solar charges the standby pack. Regen braking adds more energy. When packs swap, the cycle restarts. The vehicle builds its own perpetual energy loop — range anxiety eliminated.</div>
+        <div class="sc-body">Solar charges standby. Regen braking adds more. Packs swap. Loop restarts. The vehicle builds its own perpetual energy cycle — range anxiety permanently eliminated.</div>
         <div class="sc-stat ei">∞</div>
       </div>
     </div>
@@ -258,7 +374,7 @@ footer{background:#040508;padding:48px 56px;border-top:1px solid rgba(255,255,25
       <div>
         <div class="sw-lbl">Why a van</div>
         <div class="sw-title">Van = Ideal Solar Platform</div>
-        <div class="sw-body">A car roof gives 2–3 m² of solar surface. BERLICAN RYM's van platform gives 8–10 m² — three times the energy harvest with the same switching concept. Purpose-built for high daily mileage and predictable routes.</div>
+        <div class="sw-body">A car roof gives 2–3 m² of solar surface. BERLICAN RYM's van platform delivers 8–10 m² — three times the harvest with the same switching concept. Purpose-built for high daily mileage, predictable delivery routes, and maximum solar exposure.</div>
       </div>
       <div>
         <div class="sw-big ey">3×</div>
@@ -267,31 +383,36 @@ footer{background:#040508;padding:48px 56px;border-top:1px solid rgba(255,255,25
     </div>
 
     <div class="s3-flow">
-      <div class="fl-lbl">System loop</div>
+      <div class="fl-lbl">System loop — perpetual energy cycle</div>
       <div class="fl-row">
         <div class="fn y">Solar active</div><div class="fa">→</div>
         <div class="fn b">Pack B charging</div><div class="fa">→</div>
         <div class="fn g">Pack A driving</div><div class="fa">→</div>
-        <div class="fn">20% hit</div><div class="fa">→</div>
+        <div class="fn">20% threshold</div><div class="fa">→</div>
         <div class="fn w">4ms switch</div><div class="fa">→</div>
         <div class="fn b">Pack A charging</div><div class="fa">→</div>
         <div class="fn g">Pack B driving</div><div class="fa">→</div>
-        <div class="fn y">Loop repeats ∞</div>
+        <div class="fn y">∞ loop</div>
       </div>
     </div>
   </div>
 </section>
 
 <footer>
-  <div class="ft-logo">BERLICAN <span>RYM</span></div>
+  <div class="ft-logo"><div class="dot"></div>BERLICAN RYM</div>
+  <div class="ft-center">
+    <div class="ft-eye">Original EV Concept</div>
+    <div class="ft-name">Madusanka Gamage · Sri Lanka · 2016</div>
+  </div>
   <div class="ft-right">
-    Original concept by Madusanka Gamage · Sri Lanka · 2016<br>
-    EV Van · Dual Battery + Solar Roof Integration
+    EV Van · Dual Battery + Solar Roof<br>
+    maduyme.github.io/berlican-rym
   </div>
 </footer>
 
-<script src="three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
 <script>
+
 // ── NAV scroll effect
 window.addEventListener('scroll',()=>{
   document.getElementById('nav').classList.toggle('scrolled',scrollY>60);
@@ -526,6 +647,17 @@ function buildVan(cutaway){
   }
   tick();
 })();
+
+// ── Custom cursor
+const cur=document.getElementById('cur'),cur2=document.getElementById('cur2');
+window.addEventListener('mousemove',e=>{
+  cur.style.left=e.clientX+'px';cur.style.top=e.clientY+'px';
+  cur2.style.left=e.clientX+'px';cur2.style.top=e.clientY+'px';
+});
+document.querySelectorAll('button,a').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur2.style.width='56px';cur2.style.height='56px';});
+  el.addEventListener('mouseleave',()=>{cur2.style.width='36px';cur2.style.height='36px';});
+});
 </script>
 </body>
 </html>
